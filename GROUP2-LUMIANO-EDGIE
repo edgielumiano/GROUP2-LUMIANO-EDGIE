@@ -1,0 +1,222 @@
+import java.util.Scanner;
+
+public class MenuDrivenSystem {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        showLoadingScreen();
+
+        int choice;
+        do {
+            showMenu();
+            choice = readInt(sc, "Enter your choice: ");
+
+            switch (choice) {
+                case 1:
+                    calculator(sc);
+                    break;
+                case 2:
+                    conversion(sc);
+                    break;
+                case 3:
+                    oddEven(sc);
+                    break;
+                case 4:
+                    circleCalculator(sc);
+                    break;
+                case 5:
+                    aboutUs();
+                    break;
+                case 6:
+                    System.out.println("\nExiting program... Thank you!\n");
+                    sleepSafe(1000);
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.\n");
+            }
+        } while (choice != 6);
+
+        sc.close();
+    }
+
+    // ===== Helper Methods =====
+    private static void sleepSafe(long ms) {
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException ignored) {}
+    }
+
+    private static int readInt(Scanner sc, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String line = sc.nextLine().trim();
+            try {
+                return Integer.parseInt(line);
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid integer.");
+            }
+        }
+    }
+
+    private static double readDouble(Scanner sc, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String line = sc.nextLine().trim();
+            try {
+                return Double.parseDouble(line);
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number.");
+            }
+        }
+    }
+
+    // ===== User Interface =====
+    private static void showMenu() {
+        System.out.println("\n=====================================");
+        System.out.println("          MENU-DRIVEN SYSTEM");
+        System.out.println("=====================================");
+        System.out.println("[1] Calculator");
+        System.out.println("[2] Conversion (mm, cm, m)");
+        System.out.println("[3] Odd or Even");
+        System.out.println("[4] Area and Circumference of Circle");
+        System.out.println("[5] About Us");
+        System.out.println("[6] Exit");
+        System.out.println("=====================================\n");
+    }
+
+    private static void showLoadingScreen() {
+        System.out.print("Loading");
+        for (int i = 0; i < 5; i++) {
+            System.out.print(".");
+            sleepSafe(600);
+        }
+        System.out.println("\n");
+
+        // ===== ASCII Bear Art =====
+        System.out.println(" ───▄▀▀▀▄▄▄▄▄▄▄▀▀▀▄───");
+        System.out.println(" ───█▒▒░░░░░░░░░▒▒█───");
+        System.out.println(" ───█░░█░░░░░█░░█────");
+        System.out.println(" ─▄▄──█░░░▀█▀░░░█──▄▄─");
+        System.out.println(" █░░█─▀▄░░░░░░░▄▀─█░░█");
+        System.out.println("\nWelcome to the Menu-Driven System!\n");
+
+        sleepSafe(1500);
+    }
+
+    // ===== Features =====
+    private static void calculator(Scanner sc) {
+        System.out.println("\n--- Simple Calculator ---");
+
+        double num1 = readDouble(sc, "Enter first number: ");
+        double num2 = readDouble(sc, "Enter second number: ");
+
+        System.out.print("Select operation (+, -, *, /): ");
+        String opLine = sc.nextLine().trim();
+
+        if (opLine.isEmpty()) {
+            System.out.println("No operator entered. Returning to menu.");
+            return;
+        }
+
+        char op = opLine.charAt(0);
+        double result;
+
+        switch (op) {
+            case '+':
+                result = num1 + num2;
+                System.out.println("Result: " + result);
+                break;
+            case '-':
+                result = num1 - num2;
+                System.out.println("Result: " + result);
+                break;
+            case '*':
+                result = num1 * num2;
+                System.out.println("Result: " + result);
+                break;
+            case '/':
+                if (num2 == 0) {
+                    System.out.println("Error: Division by zero!");
+                } else {
+                    result = num1 / num2;
+                    System.out.println("Result: " + result);
+                }
+                break;
+            default:
+                System.out.println("Invalid operator!");
+        }
+    }
+
+    private static void conversion(Scanner sc) {
+        System.out.println("\n--- Unit Conversion ---");
+        System.out.println("[1] mm to cm");
+        System.out.println("[2] cm to m");
+        System.out.println("[3] m to cm");
+        System.out.println("[4] cm to mm");
+
+        int type = readInt(sc, "Choose conversion (1-4): ");
+        double val = readDouble(sc, "Enter value: ");
+        double res;
+
+        switch (type) {
+            case 1:
+                res = val / 10.0;
+                System.out.println(val + " mm = " + res + " cm");
+                break;
+            case 2:
+                res = val / 100.0;
+                System.out.println(val + " cm = " + res + " m");
+                break;
+            case 3:
+                res = val * 100.0;
+                System.out.println(val + " m = " + res + " cm");
+                break;
+            case 4:
+                res = val * 10.0;
+                System.out.println(val + " cm = " + res + " mm");
+                break;
+            default:
+                System.out.println("Invalid conversion type!");
+        }
+    }
+
+    private static void oddEven(Scanner sc) {
+        System.out.println("\n--- Odd or Even Checker ---");
+
+        int n = readInt(sc, "Enter an integer: ");
+        if (n % 2 == 0) {
+            System.out.println(n + " is Even.");
+        } else {
+            System.out.println(n + " is Odd.");
+        }
+    }
+
+    private static void circleCalculator(Scanner sc) {
+        System.out.println("\n--- Circle Calculator ---");
+
+        double r = readDouble(sc, "Enter radius: ");
+        if (r < 0) {
+            System.out.println("Radius cannot be negative.");
+            return;
+        }
+
+        double area = Math.PI * r * r;
+        double circumference = 2.0 * Math.PI * r;
+
+        System.out.printf("Area: %.4f%n", area);
+        System.out.printf("Circumference: %.4f%n", circumference);
+    }
+
+    private static void aboutUs() {
+        System.out.println("\n--- About Us ---");
+        System.out.println("Project Title: Menu-Driven System Application");
+        System.out.println("Description: This console program demonstrates Java control structures,");
+        System.out.println("methods, and user input through a simple interactive menu.\n");
+        System.out.println("Developers:");
+        System.out.println("- Lennard De Luna");
+        System.out.println("- Dazzle Legarda");
+        System.out.println("- Fiona Rich Aspe");
+        System.out.println("- Edgie Lumiano");
+        System.out.println("\nInstructor: Mr. Carl Joseph Jimenez\n");
+    }
+}
